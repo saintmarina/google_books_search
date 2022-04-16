@@ -12,7 +12,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.lang.RuntimeException
 
-const val ITEMS_PER_PAGE = 20
+const val ITEMS_PER_PAGE = 2
 class MainActivity : AppCompatActivity() {
     private val coroutine = MainScope()
 
@@ -29,10 +29,14 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             coroutine.launch {
                 try {
-                    val rootBooks = api.getBooks("cats"/*input.text.toString()*/, 0, ITEMS_PER_PAGE)
+                    val search = "cats"//input.text.toString()
+                    val rootBooks = api.getBooks("cats", 0, ITEMS_PER_PAGE)
                     Log.i("Search", rootBooks.items.toString())
                     val intent: Intent = Intent(this@MainActivity, BooksListActivity::class.java)
-                        .apply { putExtra("rootBooks", rootBooks) }
+                        .apply {
+                            putExtra("rootBooks", rootBooks)
+                            putExtra("search", search)
+                        }
                     startActivity(intent)
                 } catch (e: RuntimeException) {
                     Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
