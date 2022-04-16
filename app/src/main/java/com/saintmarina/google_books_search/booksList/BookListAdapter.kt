@@ -1,6 +1,7 @@
 package com.saintmarina.google_books_search.booksList
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +21,16 @@ class BookListAdapter(context: Context, private val resource: Int, private val o
         val item = convertView ?: LayoutInflater.from(context).inflate(resource, parent, false)
         return item.apply {
             setOnClickListener { onClick(book) }
-            Glide.with(context)
-                .load(book.volumeInfo.imageLinks.smallThumbnail)
-                .placeholder(R.drawable.ic_book_placeholder)
-                .into(findViewById(R.id.thumbnail))
-            findViewById<TextView>(R.id.book_text).text = book.volumeInfo.title
 
+            if (book.volumeInfo.imageLinks != null) {
+                Glide.with(context)
+                    .load(book.volumeInfo.imageLinks.smallThumbnail)
+                    .placeholder(R.drawable.ic_book_placeholder)
+                    .into(findViewById(R.id.thumbnail))
+            } else {
+                findViewById<ImageView>(R.id.thumbnail).setImageResource(R.drawable.ic_book_placeholder)
+            }
+            findViewById<TextView>(R.id.book_text).text = book.volumeInfo.title
         }
     }
 }

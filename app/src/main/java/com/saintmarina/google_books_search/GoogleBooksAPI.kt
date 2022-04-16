@@ -17,7 +17,8 @@ const val API_URL: String = "https://www.googleapis.com"
 class GoogleBooksAPI {
     @Parcelize
     data class RootBooks (
-        val items: List<Book>,
+        val totalItems: Int,
+        val items: List<Book>?,
         ): Parcelable
 
     @Parcelize
@@ -28,21 +29,21 @@ class GoogleBooksAPI {
 
     @Parcelize
     data class VolumeInfo(
-        val title: String,
-        val description: String,
+        val title: String?,
+        val description: String?,
         val authors: List<String>?,
-        val publishedDate: String,
-        val imageLinks: Images,
+        val publishedDate: String?,
+        val imageLinks: Images?,
     ): Parcelable
 
     @Parcelize
     data class Images(
-        val smallThumbnail: String
+        val smallThumbnail: String,
     ): Parcelable
 
     @Parcelize
     data class AccessInfo(
-        val webReaderLink: String
+        val webReaderLink: String,
     ): Parcelable
 
     private val api = Retrofit.Builder()
@@ -60,14 +61,10 @@ class GoogleBooksAPI {
         ): Response<RootBooks>
     }
 
-    suspend fun getBooks(city: String, startIndex: Int, maxResults: Int): RootBooks {
-        val response = api.bookSearch(city, startIndex, maxResults)
+    suspend fun getBooks(book: String, startIndex: Int, maxResults: Int): RootBooks {
+        val response = api.bookSearch(book, startIndex, maxResults)
         if (response.isSuccessful) {
-            val rootBooks = api.bookSearch(city, startIndex, maxResults).body()!!
-            if (rootBooks.items.isEmpty()) {
-                throw java.lang.RuntimeException("Error: Invalid weather data")
-            }
-            return rootBooks
+            return api.bookSearch(book, startIndex, maxResults).body()!!
         } else {
             val error = kotlin.runCatching { response.errorBody()?.string() }
             throw RuntimeException("Error: ${response.code()}. ${error}.")

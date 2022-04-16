@@ -3,6 +3,7 @@ package com.saintmarina.google_books_search.booksList
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
@@ -33,21 +34,31 @@ class BooksListActivity : AppCompatActivity() {
         }
 
         val bookListAdapter = BookListAdapter(this, R.layout.book_list_item, onClick)
-            .apply { addAll(rootBooks.items) }
+            .apply { addAll(rootBooks.items!!) } // it cannot be null, it's checked in the main activity
         listView.adapter = bookListAdapter
 
 
-        val loadMoreBtn = Button(this).apply { text = "Load More" }
-        loadMoreBtn.setOnClickListener {
-            coroutine.launch {
-                try {
-                    val additionalBooks = api.getBooks(search, bookListAdapter.count, ITEMS_PER_PAGE)
-                    bookListAdapter.addAll(additionalBooks.items)
-                } catch (e: RuntimeException) {
-                    Toast.makeText(this@BooksListActivity, e.message, Toast.LENGTH_LONG).show()
+        if (bookListAdapter.count < rootBooks.totalItems) {
+            val loadMoreBtn = Button(this).apply { text = "Load More" }
+            listView.addFooterView(loadMoreBtn)
+            loadMoreBtn.setOnClickListener {
+                coroutine.launch {
+                    val additionalBooks = try {
+                        api.getBooks(search, bookListAdapter.count, ITEMS_PER_PAGE)
+                    } catch (e: RuntimeException) {
+                        Toast.makeText(this@BooksListActivity, e.message, Toast.LENGTH_LONG).show()
+                        return@launch
+                    }
+                    // If we don't find additional books, we remove the load more button.
+                    // Using 'bookListAdapter.count >= rootBooks.totalItems' doesn't work reliably.
+                    if (additionalBooks.items == null) {
+                        Toast.makeText(this@BooksListActivity, "No more books to load", Toast.LENGTH_LONG).show()
+                        listView.removeFooterView(loadMoreBtn)
+                    } else {
+                        bookListAdapter.addAll(additionalBooks.items)
+                    }
                 }
             }
         }
-        listView.addFooterView(loadMoreBtn)
     }
 }
