@@ -24,6 +24,7 @@ class BooksListActivity : AppCompatActivity() {
         val search = this.intent.getStringExtra("search")!!
         val listView = findViewById<ListView>(R.id.books_list_view)
         val api = GoogleBooksAPI()
+        title = search.replaceFirstChar(Char::titlecase)
 
         val onClick = { book: GoogleBooksAPI.Book ->
             val intent: Intent = Intent(this, BookDetailActivity::class.java)

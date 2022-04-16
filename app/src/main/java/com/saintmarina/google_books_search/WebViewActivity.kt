@@ -7,6 +7,7 @@ import android.webkit.WebView
 class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = this.intent.getStringExtra("title")!!
 
         // Webview is a little finicky. http:// links opens the external browser, while https:// opens the page in-app.
         val url = this.intent.getStringExtra("url")!!

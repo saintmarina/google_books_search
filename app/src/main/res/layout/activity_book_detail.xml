@@ -1,36 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    tools:context=".booksList.BookDetailActivity"
-    android:weightSum="2">
-    <TextView
-        android:id="@+id/title_text"
-        android:layout_width="wrap_content"
+    android:gravity="center"
+    tools:context=".booksList.BookDetailActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
-        android:layout_gravity="center" />
-    <TextView
-        android:id="@+id/description_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp" />
-    <TextView
-        android:id="@+id/authors_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="40sp" />
-    <TextView
-        android:id="@+id/date_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp" />
-    <Button
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="View Book"/>
-</LinearLayout>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/detail_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/detail_authors_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/detail_title_text"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/detail_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/detail_authors_text"
+            android:textSize="11sp" />
+        <uk.co.deanwild.flowtextview.FlowTextView
+            android:id="@+id/detail_description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_date_text">
+
+            <ImageView
+                android:id="@+id/detail_thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:padding="10dp"
+                android:contentDescription="@string/book_thumbnail_string" />
+
+        </uk.co.deanwild.flowtextview.FlowTextView>
+
+        <Button
+            android:id="@+id/read_book_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_description_text"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/read_book_string"/>
+    </RelativeLayout>
+</ScrollView>

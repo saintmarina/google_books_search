@@ -29,7 +29,7 @@ class GoogleBooksAPI {
 
     @Parcelize
     data class VolumeInfo(
-        val title: String?,
+        val title: String,
         val description: String?,
         val authors: List<String>?,
         val publishedDate: String?,

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Google_books_search</string>
+    <string name="book_thumbnail_string">Book Thumbnail</string>
+    <string name="read_book_string">Read Book</string>
+    <string name="book_name_hint_string">Search Books</string>
+    <string name="search_btn_string">Search</string>
 </resources>
